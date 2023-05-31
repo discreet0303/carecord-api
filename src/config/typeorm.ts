@@ -1,7 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import * as path from 'path';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import * as path from 'path';
 import ENV_CONFIG from './env';
 
 export const OrmModuleConfig: TypeOrmModuleOptions = {
@@ -27,7 +27,7 @@ const OrmMigrationConfig = new DataSource({
   password: ENV_CONFIG.db.password,
   database: ENV_CONFIG.db.database,
   entities: [path.join(__dirname, '/../**/*.entity.{js,ts}')],
-  migrations: [path.join(__dirname, '/../database/migrations/*{.ts,.js}')],
+  migrations: [path.join(__dirname, '/../migrations/*{.ts,.js}')],
   namingStrategy: new SnakeNamingStrategy(),
   dropSchema: ENV_CONFIG.db.dbDrop,
   synchronize: ENV_CONFIG.db.dbSync,
