@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateAuthAndAccountSchema1685546343376 implements MigrationInterface {
-  name = ' CreateAuthAndAccountSchema1685546343376';
+export class CreateAuthAndAccountSchema1685632473764 implements MigrationInterface {
+  name = 'CreateAuthAndAccountSchema1685632473764';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -9,7 +9,7 @@ export class CreateAuthAndAccountSchema1685546343376 implements MigrationInterfa
     );
     await queryRunner.query(`CREATE TYPE "public"."auth_auth_type_enum" AS ENUM('APP', 'ORG_WEB')`);
     await queryRunner.query(
-      `CREATE TABLE "auth" ("id" SERIAL NOT NULL, "country_code" character varying NOT NULL, "phone_number" character varying NOT NULL, "password" character varying NOT NULL, "auth_type" "public"."auth_auth_type_enum" NOT NULL DEFAULT 'APP', "account_id" integer, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, CONSTRAINT "REL_785427223fe40c51673bf49526" UNIQUE ("account_id"), CONSTRAINT "PK_7e416cf6172bc5aec04244f6459" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "auth" ("id" SERIAL NOT NULL, "country_code" character varying NOT NULL, "phone_number" character varying NOT NULL, "password" character varying NOT NULL, "password_salt" character varying NOT NULL, "auth_type" "public"."auth_auth_type_enum" NOT NULL DEFAULT 'APP', "account_id" integer, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, CONSTRAINT "REL_785427223fe40c51673bf49526" UNIQUE ("account_id"), CONSTRAINT "PK_7e416cf6172bc5aec04244f6459" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `ALTER TABLE "auth" ADD CONSTRAINT "FK_785427223fe40c51673bf49526d" FOREIGN KEY ("account_id") REFERENCES "account"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,

@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -21,8 +22,13 @@ class AuthColumn {
   @Column()
   phoneNumber: string;
 
+  @Exclude()
   @Column()
   password: string;
+
+  @Exclude()
+  @Column()
+  passwordSalt: string;
 
   @Column({ type: 'enum', enum: AuthTypeEnum, default: AuthTypeEnum.APP })
   authType: AuthTypeEnum;
@@ -42,7 +48,7 @@ class AuthColumn {
 
 @Entity('auth')
 export class AuthEntity extends AuthColumn {
-  @OneToOne(() => AccountEntity)
+  @OneToOne(() => AccountEntity, { eager: true })
   @JoinColumn()
   account: AccountEntity;
 }
