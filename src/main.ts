@@ -18,16 +18,15 @@ function setupSwagger(app: INestApplication) {
     .setTitle('The swagger for NestJS API')
     .setDescription('The NestJs API description')
     .setVersion('1.0')
-    .addBearerAuth(
-      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'header' },
-      'Authorization',
-    )
+    .addBearerAuth()
     .build();
 
   const swagger = SwaggerModule.createDocument(app, document);
 
   SwaggerModule.setup(SWAGGER_PREFIX, app, swagger, {
     swaggerOptions: {
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
       // to persist auth after refresh page
       persistAuthorization: true,
     },

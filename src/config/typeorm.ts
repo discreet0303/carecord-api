@@ -26,7 +26,7 @@ const OrmMigrationConfig = new DataSource({
   username: ENV_CONFIG.db.username,
   password: ENV_CONFIG.db.password,
   database: ENV_CONFIG.db.database,
-  entities: [path.join(__dirname, '/../**/*.entity.{js,ts}')],
+  entities: [path.join(__dirname, '/../entities/*.entity.{js,ts}')],
   migrations: [path.join(__dirname, '/../migrations/*{.ts,.js}')],
   namingStrategy: new SnakeNamingStrategy(),
   dropSchema: ENV_CONFIG.db.dbDrop,
