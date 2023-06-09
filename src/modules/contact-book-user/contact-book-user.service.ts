@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { In } from 'typeorm';
 import { AuthEntity } from 'src/entities/auth.entity';
 import { ContactBookUserRepository } from 'src/repositories/contact-book-user.repository';
 import { ContactBookUserRelationRepository } from 'src/repositories/contact-book-user-relation.repository';
@@ -11,6 +12,23 @@ export class ContactBookUserService {
     private contactBookUserRelationRepository: ContactBookUserRelationRepository,
     private contactBookUserRepository: ContactBookUserRepository,
   ) {}
+
+  async getContactBookUserList(auth: AuthEntity) {
+    const { countryCode, phoneNumber } = auth;
+
+    const cbUserRelations = await this.contactBookUserRelationRepository.find({
+      where: { countryCode, phoneNumber },
+    });
+
+    const cbUserIds = cbUserRelations.map((item) => item.contactBookUserId);
+
+    if (cbUserIds.length === 0) return null;
+
+    return this.contactBookUserRepository.find({
+      where: { id: In(cbUserIds) },
+      relations: ['contactBookUserRelations'],
+    });
+  }
 
   async updateContactBookUser(
     contactBookUserId: number,

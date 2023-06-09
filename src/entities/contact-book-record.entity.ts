@@ -24,6 +24,14 @@ class ContactBookRecordColumn {
   @Column({ type: 'text' })
   answer: string;
 
+  @Column({
+    type: 'smallint',
+    nullable: true,
+    default: 0,
+    comment: 'UID from the same question group',
+  })
+  groupUid: number;
+
   @Column({ nullable: true })
   createdById: number;
 

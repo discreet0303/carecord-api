@@ -9,4 +9,15 @@ export class ContactBookRepository extends Repository<ContactBookEntity> {
   constructor(private dataSource: DataSource) {
     super(ContactBookEntity, dataSource.createEntityManager());
   }
+
+  async findByCBUserAndDate(contactBookUserId: number, date: string) {
+    let cb = await this.findOne({ where: { date, contactBookUserId } });
+
+    if (!cb) {
+      cb = this.create({ date, contactBookUserId });
+      cb = await this.save(cb);
+    }
+
+    return cb;
+  }
 }

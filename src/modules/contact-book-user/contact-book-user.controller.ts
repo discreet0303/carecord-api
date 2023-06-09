@@ -1,4 +1,14 @@
-import { Body, Controller, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ContactBookUserRepository } from 'src/repositories/contact-book-user.repository';
 import { IRequest } from 'src/types/common.interface';
@@ -17,6 +27,12 @@ export class ContactBookUserController {
     private contactBookUserRepository: ContactBookUserRepository,
     private readonly contactBookUserService: ContactBookUserService,
   ) {}
+
+  /* Get Method */
+  @Get('/list')
+  getContactBookUserList(@Req() req: IRequest) {
+    return this.contactBookUserService.getContactBookUserList(req.user);
+  }
 
   /* Post Method */
   @Post('/')
