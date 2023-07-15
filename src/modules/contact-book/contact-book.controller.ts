@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   Req,
   UseGuards,
@@ -16,15 +17,41 @@ import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { ContactBookService } from './contact-book.service';
 import { CreateContactBookRecordDto } from './dto/create-contact-book-record.dto';
 import { GetContactBookQueryDto } from './dto/get-contact-book-query.dto';
+import { GetContactBookQuestionsQueryDto } from './dto/get-contact-book-questions-query.dto';
+import { ContactBookQuestionService } from './contact-book-question.service';
+import { UpdateContactBookOptionsDto } from './dto/update-contact-book-option.dto';
 
 @ApiBearerAuth()
 @ApiTags('ContactBook')
 @UseGuards(JwtAuthGuard)
 @Controller('contact-book')
 export class ContactBookController {
-  constructor(private readonly contactBookService: ContactBookService) {}
+  constructor(
+    private readonly contactBookService: ContactBookService,
+    private readonly contactBookQuestionService: ContactBookQuestionService,
+  ) {}
 
   /* Get Method */
+  @Get('/question/group/:contactBookQuestionGroupId')
+  getContactBookQuestions(
+    @Param('contactBookQuestionGroupId', ParseIntPipe) contactBookQuestionGroupId: number,
+    @Query() getContactBookQuestionsQueryDto: GetContactBookQuestionsQueryDto,
+  ) {
+    const { contactBookUserId } = getContactBookQuestionsQueryDto;
+    return this.contactBookQuestionService.getContactBookQuestion(
+      contactBookUserId,
+      contactBookQuestionGroupId,
+    );
+  }
+
+  @Get('/question/group')
+  getContactBookQuestionGroups(
+    @Query() getContactBookQuestionsQueryDto: GetContactBookQuestionsQueryDto,
+  ) {
+    const { contactBookUserId } = getContactBookQuestionsQueryDto;
+    return this.contactBookQuestionService.getContactBookQuestionGroups(contactBookUserId);
+  }
+
   @Get('/')
   getContactBookData(@Query() getContactBookQueryDto: GetContactBookQueryDto) {
     return this.contactBookService.getContactBookData(getContactBookQueryDto);
@@ -42,7 +69,17 @@ export class ContactBookController {
     );
   }
 
-  /* Patch Method */
+  /* Put Method */
+  @Put('/question/:contactBookQuestionId/option')
+  updateContactBookOptions(
+    @Param('contactBookQuestionId') contactBookQuestionId: number,
+    @Body() updateContactBookOptionsDto: UpdateContactBookOptionsDto,
+  ) {
+    return this.contactBookQuestionService.updateContactBookOptions(
+      contactBookQuestionId,
+      updateContactBookOptionsDto,
+    );
+  }
 
   /* Delete Method */
   @Delete('/:contactBookId/record/:cbRecordGroupUid')

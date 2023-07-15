@@ -14,8 +14,8 @@ class ContactBookOptionColumn {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text' })
-  option: string;
+  @Column({ type: 'json' })
+  options: string[];
 
   @Column({ nullable: true })
   contactBookQuestionId: number;
