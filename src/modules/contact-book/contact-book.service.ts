@@ -46,7 +46,9 @@ export class ContactBookService {
     const cbRecords = await Promise.all(
       records.map(async (record) => {
         const { questionId, answer } = record;
-        const cbQuestion = await this.contactBookQuestionRepository.findOneBy({ id: questionId });
+        const cbQuestion = await this.contactBookQuestionRepository.findOneByOrFail({
+          id: questionId,
+        });
 
         const cbRecord = this.contactBookRecordRepository.create({
           contactBook: cb,

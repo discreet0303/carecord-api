@@ -7,9 +7,9 @@ class ContactBookQuestionGroupColumn {
   id: number;
 
   @Column()
-  key: string;
+  labelKey: string;
 
-  @Column()
+  @Column({ default: 0 })
   displayOrder: number;
 
   @Column({ type: 'enum', enum: ContactBookUserTypeEnum })

@@ -14,7 +14,7 @@ export class AuthRepository extends Repository<AuthEntity> {
   }
 
   async createAuth(signUpDto: SignUpDto) {
-    const { countryCode, phoneNumber, password } = signUpDto;
+    const { type: authType, username, password } = signUpDto;
 
     // Creating a unique salt for a particular user
     const salt = crypto.randomBytes(16).toString('hex');
@@ -22,7 +22,13 @@ export class AuthRepository extends Repository<AuthEntity> {
     // Hash the salt and password with 1000 iterations, 64 length and sha512 digest
     const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
 
-    let auth = this.create({ countryCode, phoneNumber, password: hash, passwordSalt: salt });
+    let auth = this.create({
+      username,
+      password: hash,
+      passwordSalt: salt,
+      authType,
+      isVerified: false,
+    });
 
     await this.dataSource.transaction(async (transactionalEntityManager) => {
       // execute queries using transactionalEntityManager

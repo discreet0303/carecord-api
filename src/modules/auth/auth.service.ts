@@ -11,9 +11,9 @@ export class AuthService {
   constructor(private authRepository: AuthRepository, private readonly jwtService: JwtService) {}
 
   async signIn(signInDto: SignInDto) {
-    const { countryCode, phoneNumber, password } = signInDto;
+    const { type: authType, username, password } = signInDto;
 
-    const auth = await this.authRepository.findOne({ where: { countryCode, phoneNumber } });
+    const auth = await this.authRepository.findOne({ where: { authType, username } });
 
     if (!auth) throw new UnauthorizedException('User not found.');
 
@@ -30,9 +30,9 @@ export class AuthService {
   }
 
   async signUp(signUpDto: SignUpDto) {
-    const { countryCode, phoneNumber } = signUpDto;
+    const { type: authType, username } = signUpDto;
 
-    let auth = await this.authRepository.findOne({ where: { countryCode, phoneNumber } });
+    let auth = await this.authRepository.findOne({ where: { authType, username } });
 
     if (auth) throw new UnauthorizedException('User is exist.');
 

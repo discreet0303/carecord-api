@@ -15,20 +15,23 @@ class ContactBookUserRelationColumn {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  countryCode: string;
-
-  @Column()
-  phoneNumber: string;
-
   @Column({ type: 'enum', enum: ContactBookUserRelationTypeEnum })
   type: ContactBookUserRelationTypeEnum;
 
   @Column({ nullable: true })
   note: string;
 
+  @Column({ default: false })
+  isActive: boolean;
+
+  @Column({ nullable: true })
+  isOwner: boolean;
+
   @Column({ nullable: true })
   contactBookUserId: number;
+
+  @Column({ nullable: true })
+  authId: number;
 
   @Column({ nullable: true })
   createdById: number;
@@ -48,6 +51,9 @@ class ContactBookUserRelationColumn {
 
 @Entity('contact-book-user-relation')
 export class ContactBookUserRelationEntity extends ContactBookUserRelationColumn {
+  @ManyToOne(() => AuthEntity)
+  auth: AuthEntity;
+
   @ManyToOne(() => ContactBookUserEntity, (cbUser) => cbUser.contactBookUserRelations)
   contactBookUser: ContactBookUserEntity;
 

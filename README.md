@@ -31,12 +31,6 @@ chmod 777 '.husky/pre-push'
 yarn
 ```
 
-- If you want to use postgres
-
-```bash
-yarn add pg
-```
-
 ### Set up environment
 
 Copy `.env.example` to setup local `env`
@@ -46,12 +40,6 @@ cp .env.example .env
 ```
 
 ### Run API server locally
-
-To run API locally, you have to make sure the `mysql`, `redis`(if added) is ready.
-
-```bash
-docker-compose up mysql
-```
 
 We run local server at utc-0 timezone to prevent timezone issue, which also make local server close to aws server.
 
@@ -69,16 +57,20 @@ The migration command line only supports `npm`, do not use `yarn`.
 
 ```bash
 # Create a migration
-npm run typeorm:create --name={filename}
+npm run db:migration:create --name={filename}
 
 # Auto generate a migration
-npm run typeorm:generate --name={filename}
+npm run db:migration:generate --name={filename}
 
 # Run migration
-npm run typeorm:run
+npm run db:migration:run
 
 # Revert a migration
-npm run typeorm:revert
+npm run db:migration:revert
+
+# run seed
+npm run db:seed:run
+yarn db:seed:run
 ```
 
 ### Test
@@ -107,6 +99,7 @@ This project follows a very simple project structure:
 
   - `config`: Folder to store any kind of config that you have.
   - `constants`: Folder to store any kind of constant that you have.
+  - `databases`: Folder to store any kind of migrations or seeds that you have.
   - `decorators`: Folder to store any kind of decorator that you have.
   - `entities`: Folder to store any kind of entity that you have.
   - `enums`: Folder to store any kind of enum constant that you have.

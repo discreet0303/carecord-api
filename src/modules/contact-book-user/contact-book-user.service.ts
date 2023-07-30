@@ -14,11 +14,7 @@ export class ContactBookUserService {
   ) {}
 
   async getContactBookUserList(auth: AuthEntity) {
-    const { countryCode, phoneNumber } = auth;
-
-    const cbUserRelations = await this.contactBookUserRelationRepository.find({
-      where: { countryCode, phoneNumber },
-    });
+    const cbUserRelations = await this.contactBookUserRelationRepository.find({ where: { auth } });
 
     const cbUserIds = cbUserRelations.map((item) => item.contactBookUserId);
 
@@ -46,19 +42,15 @@ export class ContactBookUserService {
     createContactBookUserRelationDto: CreateContactBookUserRelationDto,
     user?: AuthEntity,
   ) {
-    const { countryCode, phoneNumber, relationType, note } = createContactBookUserRelationDto;
+    const { relationType, note } = createContactBookUserRelationDto;
 
     let bookUserRelation = await this.contactBookUserRelationRepository.findOneBy({
       contactBookUserId,
-      countryCode,
-      phoneNumber,
     });
 
     if (bookUserRelation) throw new BadRequestException('This phone number is already exist.');
 
     bookUserRelation = this.contactBookUserRelationRepository.create({
-      countryCode,
-      phoneNumber,
       type: relationType,
       note,
       contactBookUserId,

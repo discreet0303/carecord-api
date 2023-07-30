@@ -4,14 +4,6 @@ import { ContactBookUserRelationTypeEnum } from 'src/enums/contact-book-user-rel
 
 export class CreateContactBookUserRelationDto {
   @ApiProperty()
-  @IsString()
-  countryCode: string;
-
-  @ApiProperty()
-  @IsString()
-  phoneNumber: string;
-
-  @ApiProperty()
   @IsEnum(ContactBookUserRelationTypeEnum)
   relationType: ContactBookUserRelationTypeEnum;
 

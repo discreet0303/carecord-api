@@ -16,11 +16,8 @@ class AuthColumn {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  countryCode: string;
-
-  @Column()
-  phoneNumber: string;
+  @Column({ unique: true })
+  username: string;
 
   @Exclude()
   @Column()
@@ -30,8 +27,12 @@ class AuthColumn {
   @Column()
   passwordSalt: string;
 
-  @Column({ type: 'enum', enum: AuthTypeEnum, default: AuthTypeEnum.APP })
+  @Exclude()
+  @Column({ type: 'enum', enum: AuthTypeEnum, default: AuthTypeEnum.APP_USERNAME })
   authType: AuthTypeEnum;
+
+  @Column({ default: false })
+  isVerified: boolean;
 
   @Column({ nullable: true })
   accountId: number;

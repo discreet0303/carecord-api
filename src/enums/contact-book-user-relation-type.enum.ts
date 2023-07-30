@@ -1,4 +1,4 @@
 export enum ContactBookUserRelationTypeEnum {
-  OWNER = 'OWNER',
+  PARENT = 'PARENT',
   CAREGIVER = 'CAREGIVER',
 }

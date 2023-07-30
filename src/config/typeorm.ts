@@ -1,5 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import * as path from 'path';
 import ENV_CONFIG from './env';
@@ -19,7 +19,7 @@ export const OrmModuleConfig: TypeOrmModuleOptions = {
   logger: ENV_CONFIG.db.dbLogger,
 };
 
-const OrmMigrationConfig = new DataSource({
+export const DataSourceOption: DataSourceOptions = {
   type: ENV_CONFIG.db.type,
   host: ENV_CONFIG.db.host,
   port: ENV_CONFIG.db.port,
@@ -27,10 +27,12 @@ const OrmMigrationConfig = new DataSource({
   password: ENV_CONFIG.db.password,
   database: ENV_CONFIG.db.database,
   entities: [path.join(__dirname, '/../entities/*.entity.{js,ts}')],
-  migrations: [path.join(__dirname, '/../migrations/*{.ts,.js}')],
+  migrations: [path.join(__dirname, '/../database/migrations/*{.ts,.js}')],
   namingStrategy: new SnakeNamingStrategy(),
   dropSchema: ENV_CONFIG.db.dbDrop,
   synchronize: ENV_CONFIG.db.dbSync,
-});
+};
+
+const OrmMigrationConfig = new DataSource(DataSourceOption);
 
 export default OrmMigrationConfig;

@@ -6,6 +6,7 @@ import { ContactBookUserEntity } from 'src/entities/contact-book-user.entity';
 import { AuthEntity } from 'src/entities/auth.entity';
 import { CreateContactBookUserDto } from 'src/modules/contact-book-user/dto/create-contact-book-user.dto';
 import { ContactBookUserRelationEntity } from 'src/entities/contact-book-user-relation.entity';
+import { generateRandomString } from 'src/utils/string';
 
 @Injectable()
 export class ContactBookUserRepository extends Repository<ContactBookUserEntity> {
@@ -18,17 +19,17 @@ export class ContactBookUserRepository extends Repository<ContactBookUserEntity>
     createContactBookUserDto: CreateContactBookUserDto,
   ) {
     const { name, birthday, userType, relationType, note } = createContactBookUserDto;
-    let bookUser = this.create({ name, type: userType, birthday });
+    const uid = generateRandomString(6);
+    let bookUser = this.create({ name, type: userType, birthday, uid });
 
     await this.dataSource.transaction(async (transactionalEntityManager) => {
       bookUser = await transactionalEntityManager.save(bookUser);
 
       let bookUserRelation = transactionalEntityManager.create(ContactBookUserRelationEntity, {
-        countryCode: auth.countryCode,
-        phoneNumber: auth.phoneNumber,
         type: relationType,
         note,
         contactBookUser: bookUser,
+        auth,
       });
 
       bookUserRelation = await transactionalEntityManager.save(bookUserRelation);

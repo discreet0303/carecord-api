@@ -28,7 +28,7 @@ class ContactBookRecordColumn {
     type: 'smallint',
     nullable: true,
     default: 0,
-    comment: 'UID from the same question group',
+    comment: 'Group id for the same question group',
   })
   groupUid: number;
 

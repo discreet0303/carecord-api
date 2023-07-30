@@ -1,15 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, Matches } from 'class-validator';
+import { IsEnum, IsString, Matches } from 'class-validator';
 import { PASSWORD_REGEX } from 'src/constants/regex';
+import { AuthTypeEnum } from 'src/enums/auth-type.enum';
 
 export class SignUpDto {
   @ApiProperty()
-  @IsString()
-  countryCode: string;
+  @IsEnum(AuthTypeEnum)
+  type: AuthTypeEnum;
 
   @ApiProperty()
   @IsString()
-  phoneNumber: string;
+  username: string;
 
   @ApiProperty()
   @Matches(PASSWORD_REGEX)

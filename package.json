@@ -22,11 +22,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "type-check": "tsc",
     "prepare": "husky install",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "typeorm:run": "npm run typeorm migration:run -- -d ./src/config/typeorm.ts",
-    "typeorm:generate": "npm run typeorm -- -d ./src/config/typeorm.ts migration:generate ./src/migrations/$npm_config_name",
-    "typeorm:create": "npm run typeorm -- migration:create ./src/migrations/$npm_config_name",
-    "typeorm:revert": "npm run typeorm -- -d ./src/config/typeorm.ts migration:revert"
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d ./src/config/typeorm.ts",
+    "db:migration:run": "npm run typeorm migration:run",
+    "db:migration:generate": "npm run typeorm -- migration:generate ./src/database/migrations/$npm_config_name",
+    "db:migration:revert": "npm run typeorm -- migration:revert",
+    "db:seed:run": "ts-node -r tsconfig-paths/register ./src/database/seed-runner.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -48,6 +48,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.16",
+    "typeorm-extension": "^2.8.1",
     "typeorm-naming-strategies": "^4.1.0"
   },
   "devDependencies": {

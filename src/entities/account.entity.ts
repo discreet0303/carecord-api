@@ -5,7 +5,7 @@ class AccountColumn {
   id: number;
 
   @Column({ nullable: true })
-  username: string;
+  name: string;
 
   @Column({ nullable: true })
   avatar: string;

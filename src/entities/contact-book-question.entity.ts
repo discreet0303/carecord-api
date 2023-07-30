@@ -9,22 +9,13 @@ class ContactBookQuestionColumn {
   id: number;
 
   @Column()
-  key: string;
+  labelKey: string;
 
-  @Column()
+  @Column({ default: 0 })
   displayOrder: number;
 
-  @Column({ nullable: true })
-  displayPrefix: string;
-
-  @Column({ nullable: true })
-  displaySuffix: string;
-
-  @Column()
+  @Column({ type: 'enum', enum: ContactBookQuestionTypeEnum })
   type: ContactBookQuestionTypeEnum;
-
-  @Column({ type: 'json', nullable: true })
-  defaultOptions: string[];
 
   @Column({ nullable: true })
   contactBookQuestionGroupId: number;

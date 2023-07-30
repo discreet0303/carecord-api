@@ -21,6 +21,9 @@ class ContactBookUserColumn {
   @Column()
   name: string;
 
+  @Column({ unique: true })
+  uid: string;
+
   @Column({ type: 'enum', enum: ContactBookUserTypeEnum })
   type: ContactBookUserTypeEnum;
 
@@ -32,9 +35,6 @@ class ContactBookUserColumn {
 
   @Column({ nullable: true })
   avatar: string;
-
-  @Column({ nullable: true })
-  ownerId: number;
 
   @CreateDateColumn()
   createdAt: Date;
