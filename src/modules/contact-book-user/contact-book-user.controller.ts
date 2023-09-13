@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -65,6 +66,18 @@ export class ContactBookUserController {
     return this.contactBookUserService.updateContactBookUser(
       contactBookUserId,
       updateContactBookUserDto,
+    );
+  }
+
+  /* Delete Method */
+  @Delete('/relation/:contactBookUserRelationId')
+  deleteContactBookUserRelation(
+    @Req() req: IRequest,
+    @Param('contactBookUserRelationId', ParseIntPipe) contactBookUserRelationId: number,
+  ) {
+    return this.contactBookUserService.deleteContactBookUserRelation(
+      contactBookUserRelationId,
+      req.user,
     );
   }
 }

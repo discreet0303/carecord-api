@@ -59,4 +59,15 @@ export class ContactBookUserService {
 
     return this.contactBookUserRelationRepository.save(bookUserRelation);
   }
+
+  async deleteContactBookUserRelation(contactBookUserRelationId: number, auth: AuthEntity) {
+    const cbUserRelation = await this.contactBookUserRelationRepository.findOneByOrFail({
+      id: contactBookUserRelationId,
+    });
+
+    cbUserRelation.deletedAt = new Date();
+    cbUserRelation.deletedBy = auth;
+
+    return this.contactBookUserRelationRepository.save(cbUserRelation);
+  }
 }
