@@ -5,6 +5,7 @@ import { AuthEntity } from 'src/entities/auth.entity';
 import { AuthRepository } from 'src/repositories/auth.repository';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -41,6 +42,20 @@ export class AuthService {
     const token = this.getJwtToken(auth);
 
     return { token, auth };
+  }
+
+  forgotPassword(authEntity: AuthEntity, forgotPasswordDto: ForgotPasswordDto) {
+    const { newPassword, confirmPassword } = forgotPasswordDto;
+
+    if (newPassword !== confirmPassword) throw new UnauthorizedException('Password is not match.');
+
+    const auth = this.authRepository.create(authEntity);
+
+    auth.password = crypto
+      .pbkdf2Sync(newPassword, auth.passwordSalt, 1000, 64, 'sha512')
+      .toString('hex');
+
+    return this.authRepository.save(auth);
   }
 
   getJwtToken(auth: AuthEntity) {
